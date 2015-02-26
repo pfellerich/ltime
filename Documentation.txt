@@ -1,0 +1,265 @@
+User documentation for Ltime module version 0.5
+For Lua 5.2
+By Pascal Fellerich (pascal.fellerich@ses.com)
+and Nicolas Griselle (nicolas.griselle@gmail.com)
+
+
+Content :
+
+	1. Ltime module
+
+	2. Time object
+
+	3. Epoch object
+
+	4. Arithmetics
+
+
+1. Ltime module
+
+
+Ltime module can handle dates ranging from 1858-11-17 to 9999-12-31.
+Behavior of the module with out of range dates is undefined.
+
+
+Create Time object according to given parameter
+Time = Ltime.Time(parameter)
+Parameter can be :
+ - Nil or no parameter, considered current time in microsecond precision
+ - A number, considered number of seconds since 1970-01-01 00:00:00
+ - A strict ISO 8601 string, YYYY-MM-DD[Thh:mm:ss[.uuuuuu]]
+ - A table with keys "year", "month", "day", "hour", "min", "sec", "usec"
+ - An other Time object
+
+
+Create Time object according to given parameters
+Time = Ltime.mktime(year[, month[, day[, hours[, minutes[, seconds[, useconds]]]]]])
+
+
+Create Epoch object accoridng to given parameter
+Epoch = Ltime.Epoch(parameter)
+Parameter can be :
+ - Nil or no parameter, considered 0 seconds
+ - A number, considered number of seconds
+ - A deltatime string, [+/-][DDDD ]hh:mm:ss[.uuuuuu]
+ - An other Epoch object
+
+
+Return a string representing Ltime module version
+version = Ltime.VERSION()
+
+
+2. Time object
+
+
+Return a formated representation of the Time object
+string = Time:format(format_string)
+format_string can include the following conversion specifier characters :
+ - %a -> The abreviated weekday in english
+ - %A -> The full weekday in english
+ - %b -> The abreviated month name in english
+ - %B -> The full month name in english
+ - %C -> The century number (year/100) as a 2-digit integer
+ - %d -> The day of the month as a decimal number (range 01 to 31)
+ - %D -> Equivalent to %m/%d/%y
+ - %e -> Like %d, the day of the month as a decimal number, but a leading zero is replaced by a space
+ - %F -> Equivalent to %Y-%m-%d (the ISO 8601 date format)
+ - %h -> Equivalent to %b
+ - %H -> The hour as a decimal number using a 24-hour clock (range 00 to 23)
+ - %I -> The hour as a decimal number using a 12-hour clock (range 01 to 12)
+ - %j -> The day of the year as a decimal number (range 001 to 366)
+ - %k -> The hour (24-hour  clock) as a decimal number (range 0 to 23), single digits are preceded by a blank
+ - %l -> The hour (12-hour clock) as a decimal number (range  1  to  12), single digits are preceded by a blank
+ - %m -> The month as a decimal number (range 01 to 12)
+ - %M -> The minute as a decimal number (range 00 to 59)
+ - %n -> A newline character
+ - %p -> Either "AM" or "PM", noon is treated as "PM" and midnight as "AM"
+ - %P -> Like %p but in lowercase: "am" or "pm"
+ - %q -> The milliseconds as a decimal number (range 000 to 999)
+ - %Q -> The microseconds as a decimal number (range 000 to 999)
+ - %r -> The time in a.m. or p.m. notation, this is equivalent to %I:%M:%S %p
+ - %R -> The time in 24-hour notation (%H:%M)
+ - %s -> The number of seconds since the Epoch, 1970-01-01 00:00:00 +0000 (UTC)
+ - %S -> The second as a decimal number (range 00 to 59)
+ - %t -> A tab character
+ - %T -> The time in 24-hour notation (%H:%M:%S)
+ - %u -> The day of the week as a decimal, range 1 to 7, Monday being 1
+ - %x -> The preferred date representation without the time
+ - %X -> The preferred time representation without the date
+ - %y -> The year as a decimal number without a century (range 00 to 99)
+ - %Y -> The year as a decimal number including the century
+ - %. -> The milliseconds and microseconds as a decimal number (%q%Q)
+ - %% -> A literal '%' character
+
+
+Clone Time object
+Time2 = Time:clone()
+
+
+Set/get date without affecting time of day
+Setter: Time = Time:date(parameter)
+Getter: Time2 = Time:date()
+Parameter can be :
+ - Nil, considered 1970-01-01 00:00:00
+ - A number, considered number fo seconds since 1970-01-01 00:00:00
+ - A strict ISO 8601 string, YYYY-MM-DD[Thh:mm:ss[.uuuuuu]]
+ - A table with keys "year", "month", "day", "hour", "min", sec", "usec"
+ - An other Time object
+If parameter include a time of day, it will be silently ignored
+
+
+Set/get time of day without affecting date
+Setter: Time = Time:time(parameter)
+Getter: Epoch = Time:time()
+Parameter can be :
+ - Nil, considered 00:00:00
+ - A number, considered number of seconds from 00:00:00
+ - A deltatime string, [+]hh:mm:ss[.uuuuuu]
+ - An Epoch object with value between 00:00:00.000000 and 23:59:59.999999
+
+
+Add onto the same object
+Time = Time:add(parameter)
+Parameter can be :
+ - A number, considered number of seconds
+ - A deltatime string, [+/-][DDDD ]hh:mm:ss[.uuuuuu]
+ - An Epoch object
+
+
+Substract from the same object
+Time = Time:sub(parameter)
+Parameter can be :
+ - A number, considered number of seconds
+ - A deltatime string, [+/-][DDDD ]hh:mm:ss[.uuuuuu]
+ - An Epoch object
+
+
+Round down the same object to the next "stop"
+Time = Time:floor(parameter)
+Parameter can be :
+ - A number, considered number of seconds
+ - A deltatime string, [+/-][DDDD ]hh:mm:ss[.uuuuuu]
+ - An Epoch object
+
+
+Round up the same object to the next "stop"
+Time = Time:ceil(parameter)
+Parameter can be :
+ - A number, considered number of seconds
+ - A deltatime string, [+/-][DDDD ]hh:mm:ss[.uuuuuu]
+ - An Epoch object
+
+
+Return true if leap year, false otherwise
+boolean = Time:leap()
+
+
+Set/get yearday without affecting time of day (1 = January 1st, ...)
+Setter: Time = Time:doy(yearday)
+Getter: yearday = Time:doy()
+
+
+Get weekday (1 = Monday, ..., 7 = Sunday)
+weekday = Time:weekday()
+
+
+Set/get date via MJD (modified julian day) without affecting time of day
+Setter: Time = Time:mjd(mjd)
+Getter: mjd = Time:mjd()
+
+
+Set/get VMS timestamp (number of 100 nanoseconds ticks since 1858-11-17 00:00:00)
+Setter: Time = Time:vms(vmsTimestamp)
+Getter: vmsTimestamp = Time:vms()
+        hexTimestamp = Time:vms("*h")     (16 hex nibbles)
+        binaryTimestamp = Time:vms("*b")  (8 bytes in network order)
+
+Note: in Lua 5.3, this functions takes and returns 64 bit integers, i.e. no
+precision loss occurs.
+
+
+3. Epoch object
+
+
+Clone Epoch object
+Epoch2 = Epoch:clone()
+
+
+Get Epoch value as microseconds
+useconds = Epoch:useconds()
+
+
+Get Epoch value as milliseconds
+mseconds = Epoch:mseconds()
+
+
+Get Epoch value as seconds
+seconds = Epoch:seconds()
+seconds = Epoch:tonumber()
+
+
+Get Epoch value as minutes
+minutes = Epoch:minutes()
+
+
+Get Epoch value as hours
+hours = Epoch:hours()
+
+
+Get Epoch value as days
+days = Epoch:days()
+
+
+4. Arithmetics
+
+
+The following arithmetics are defined :
+
+
+	Time + parameter or parameter + Time gives Time
+	Parameter can be :
+		- A number, considered number of seconds
+		- A deltatime string, [+/-][DDDD ]hh:mm:ss[.uuuuuu]
+		- An Epoch object
+
+
+	Time - Time gives Epoch
+
+
+	Time - parameter gives Time
+	Parameter can be :
+		- A number, considered number of seconds
+		- A deltatime string, [+/-][DDDD ]hh:mm:ss[.uuuuuu]
+		- An Epoch object
+
+
+	Time % number, considered number of seconds, gives seconds as number
+
+
+	Time % parameter gives Epoch
+	Parameter can be :
+		- A deltatime string, [+/-][DDDD ]hh:mm:ss[.uuuuuu]
+		- An Epoch object
+
+
+	Epoch + parameter or parameter + Epoch gives Epoch
+	Parameter can be :
+		- A number, considered number of seconds
+		- A deltatime string, [+/-][DDDD ]hh:mm:ss[.uuuuuu]
+		- An other Epoch object
+
+
+	Epoch - parameter gives Epoch
+	Parameter can be :
+		- A number, considered number of seconds
+		- A deltatime string, [+/-][DDDD ]hh:mm:ss[.uuuuuu]
+		- An other Epoch object
+
+
+	Epoch * number or number * Epoch gives Epoch
+
+
+	Epoch / number gives Epoch
+	
+	Epoch % number gives Epoch
+
