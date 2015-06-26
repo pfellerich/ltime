@@ -1,6 +1,7 @@
 -- Some tests
 print "LTime module test for Lua 5.3"
 
+package.cpath = "./?.so;" .. package.cpath
 local ltime = require"ltime"
 
 -- Shortcuts
@@ -157,6 +158,18 @@ if _VERSION=="Lua 5.3" then
 	assert(T"1969-06-11 16:12:43.000001":vms()==0x7BF5A162B54F8A, "Precision loss due to non 64 bit integers")
 	assert(tostring(T():vms(0x7BF5A162B54F8A))=="1969-06-11 16:12:43.000001", "Precision loss due to non 64 bit integers")
 
+end
+
+-- Segfault on 0.7 when overflowing
+for i=16,50 do
+	local x = T(2^i)
+	print(x:vms("*x"), x:format("%Y-%m-%d %x %X"), x, x:format"/%s/" )
+end
+-- print(T(49420232625460839))
+
+for i=16,50 do
+	local x = E(2^i)
+	print(x)
 end
 
 print("\n"..ltime.VERSION.." OK")

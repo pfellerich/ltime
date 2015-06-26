@@ -107,15 +107,15 @@ int fromTicks(long long t, unsigned *D, unsigned *h, unsigned *m, unsigned *s, u
 	char sign = (t >= 0 ? 1 : -1);
 	t = (t >= 0 ? t : -t);
 	if (us)
-		*us = t / 10 % (long long)1e6;
+		*us = t / 10 % (unsigned long long)1e6;
 	if (s)
-		*s = t / (long long)1e7 % 60;
+		*s = t / (unsigned long long)1e7 % 60;
 	if (m)
-		*m = t / (long long)6e8 % 60;
+		*m = t / (unsigned long long)6e8 % 60;
 	if (h)
-		*h = t / (long long)3.6e10 % 24;
+		*h = t / (unsigned long long)3.6e10 % 24;
 	if (D)
-		*D = t / (long long)8.64e11;
+		*D = t / (unsigned long long)8.64e11;
 	return sign;
 }
 

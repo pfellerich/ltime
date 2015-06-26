@@ -177,14 +177,14 @@ static void fromMJD(int MJD, unsigned *Y, unsigned *M, unsigned *D) {
 void fromVMS(long long t, unsigned *Y, unsigned *M, unsigned *D, unsigned *h, unsigned *m, unsigned *s, unsigned *us) {
 	
 	if (us)
-		*us = t / 10 % (long long)1e6;
+		*us = t / 10 % (unsigned long long)1e6;
 	if (s)
-		*s = t / (long long)1e7 % 60;
+		*s = t / (unsigned long long)1e7 % 60;
 	if (m)
-		*m = t / (long long)6e8 % 60;
+		*m = t / (unsigned long long)6e8 % 60;
 	if (h)
-		*h = t / (long long)3.6e10 % 24;
-	fromMJD(t / (long long)8.64e11, Y, M, D);
+		*h = t / (unsigned long long)3.6e10 % 24;
+	fromMJD(t / (unsigned long long)8.64e11, Y, M, D);
 }
 
 /*
@@ -608,7 +608,7 @@ static int datetime_le(lua_State *L) {
 static int datetime_tostring(lua_State *L) {
 	t_datetime *self = (t_datetime *)luaL_checkudata(L, 1, LTIME_MT_DATETIME);
 	unsigned Y, M, D, h, m, s, us;
-	char buffer[50];
+	char buffer[42];
 	fromVMS(self->t, &Y, &M, &D, &h, &m, &s, &us);
 /*	if (us && us % 1000)
 		sprintf(buffer, "%04u-%02u-%02u %02u:%02u:%02u.%06u", Y, M, D, h, m, s, us);
@@ -621,9 +621,9 @@ static int datetime_tostring(lua_State *L) {
 */
 
 	if (us)
-		sprintf(buffer, "%04u-%02u-%02u %02u:%02u:%02u.%06u", Y, M, D, h, m, s, us);
+		snprintf(buffer, 40, "%04u-%02u-%02u %02u:%02u:%02u.%06u", Y, M, D, h, m, s, us);
 	else
-		sprintf(buffer, "%04u-%02u-%02u %02u:%02u:%02u", Y, M, D, h, m, s);
+		snprintf(buffer, 40, "%04u-%02u-%02u %02u:%02u:%02u", Y, M, D, h, m, s);
 
 	lua_pushstring(L, buffer);
 	return 1;

@@ -264,7 +264,7 @@ static int format_R(char *buffer, long long t, unsigned Y, unsigned M, unsigned 
  */
 static int format_s(char *buffer, long long t, unsigned Y, unsigned M, unsigned D, unsigned h, unsigned m, unsigned s, unsigned us) {
 	
-	return snprintf(buffer, 21, "%lld", t - VMS_1970);
+	return snprintf(buffer, 24, "%lld", t - VMS_1970);
 }
 
 /*
@@ -394,7 +394,7 @@ static t_spec specs[] = {
 	{'Q', 3, format_Q},
 	{'r', 11, format_r},
 	{'R', 5, format_R},
-	{'s', 20, format_s},
+	{'s', 24, format_s},
 	{'S', 2, format_S},
 	{'t', 1, format_t},
 	{'T', 8, format_T},
