@@ -578,6 +578,21 @@ static int datetime_mod(lua_State *L) {
 }
 
 /*
+ *  Time.__concat(a, b)
+ * 
+ *  either a or b, or both, can be Time. In fact, anything that converts to a 
+ *  string is fine.
+ * 	This is essentially doing this:
+ * 	function __concat(a,b) return tostring(a)..tostring(b); end
+ */
+static int datetime_concat(lua_State *L) {
+	luaL_tolstring(L,1,NULL);
+	luaL_tolstring(L,2,NULL);
+	lua_concat(L, 2);
+	return 1;
+}
+
+/*
  *  Time.__eq(a, b)
  */
 static int datetime_eq(lua_State *L) {
@@ -666,6 +681,7 @@ int open_datetime(lua_State *L) {
 		{"__mul", datetime_mul},
 		{"__div", datetime_div},
 		{"__mod", datetime_mod},
+		{"__concat", datetime_concat},
 		{"__eq",  datetime_eq},
 		{"__lt",  datetime_lt},
 		{"__le",  datetime_le},

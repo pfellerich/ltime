@@ -10,7 +10,7 @@
 #include <lauxlib.h>
 #include <lualib.h>
 
-#define LTIME_VERSION		"LTime v0.8"
+#define LTIME_VERSION		"LTime v0.9"
 
 #define LTIME_MT_DATETIME	"LTime_Datetime"
 #define LTIME_MT_EPOCH		"LTime_Epoch"

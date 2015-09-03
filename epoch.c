@@ -321,6 +321,17 @@ static int epoch_mod(lua_State *L) {
 
 
 /*
+ *  Epoch.__concat(a, b)
+ */
+static int epoch_concat(lua_State *L) {
+	luaL_tolstring(L,1,NULL);
+	luaL_tolstring(L,2,NULL);
+	lua_concat(L, 2);
+	return 1;
+}
+
+
+/*
  *  Epoch.__eq(a, b)
  */
 static int epoch_eq(lua_State *L) {
@@ -410,6 +421,7 @@ int open_epoch(lua_State *L) {
 		{"__mul", epoch_mul},
 		{"__div", epoch_div},
 		{"__mod", epoch_mod},
+		{"__concat", epoch_concat},
 		{"__eq",  epoch_eq},
 		{"__lt",  epoch_lt},
 		{"__le",  epoch_le},

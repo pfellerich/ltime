@@ -172,6 +172,15 @@ for i=16,50 do
 	print(x)
 end
 
+-- Concat operation
+print("Current UTC time is " .. T())
+print(T() .. " is the current UTC time is")
+print( T() .. T() )
+
+print("1234 seconds is " .. E(1234))
+print(E(1234) .. " is 1234 seconds")
+print(E(1234) .. E(-1234))
+
 print("\n"..ltime.VERSION.." OK")
 
 
