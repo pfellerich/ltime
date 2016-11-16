@@ -383,12 +383,12 @@ static int datetime_yearday(lua_State *L) {
 static int datetime_weekday(lua_State *L) {
 	
 	t_datetime *self = (t_datetime *)luaL_checkudata(L, 1, LTIME_MT_DATETIME);
-	lua_pushnumber(L, (self->t / (long long)1e7 / 86400 + 2) % 7 + 1);
+	lua_pushinteger(L, (self->t / (long long)1e7 / 86400 + 2) % 7 + 1);
 	return 1;
 }
 
 /*
- * 	Set/get date via MJD without affecting time of day
+ * 	Set/get MJD 
  *  Setter: Time = Time:mjd(mjd)
  *  Getter: mjd = Time:mjd()
  */
@@ -396,10 +396,10 @@ static int datetime_mjd(lua_State *L) {
 	
 	t_datetime *self = (t_datetime *)luaL_checkudata(L, 1, LTIME_MT_DATETIME);
 	if (lua_gettop(L) > 1 && lua_isnumber(L, 2)) {
-		self->t = (long long)lua_tonumber(L, 2) * 86400 * 1e7;
+		self->t = (long long)(lua_tonumber(L, 2) * 86400e7);
 		lua_settop(L, 1);
 	} else {
-		lua_pushnumber(L, self->t / (long long)1e7 / 86400);
+		lua_pushnumber(L, self->t / 86400e7);
 	}
 	return 1;
 }
