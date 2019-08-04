@@ -67,9 +67,9 @@ Return a formatted representation of the Time object
 string = Time:format(format_string)
 ```
 format_string can include the following conversion specifier characters :
- * %a -> The abreviated weekday in english
+ * %a -> The abbreviated weekday in english
  * %A -> The full weekday in english
- * %b -> The abreviated month name in english
+ * %b -> The abbreviated month name in english
  * %B -> The full month name in english
  * %C -> The century number (year/100) as a 2-digit integer
  * %d -> The day of the month as a decimal number (range 01 to 31)
